@@ -33,5 +33,7 @@ public class playControl : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D collision)
 	{
 		Debug.Log("playControl::OnCollisionEnter2D GameOver()");
+		scoreKeeper.ResetScore ();
+		Application.LoadLevel("GamePlay");
 	}
 }
