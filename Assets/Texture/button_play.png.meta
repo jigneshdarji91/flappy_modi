@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: f3643363741e49343ac4228d56f08d97
+guid: 843302527fe3245469f0c0251c58f24d
 TextureImporter:
   fileIDToRecycleName:
-    21300000: obstacle
+    21300000: button_play
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0

@@ -11,6 +11,11 @@ public class playControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (! renderer.isVisible)
+		{
+			Debug.Log("playControl::Update() Out of screen");
+			//Die ();
+		}
 		if(Input.GetKeyDown(KeyCode.Escape))
 		{
 			//Application.LoadLevel("StartMenu");
@@ -33,7 +38,14 @@ public class playControl : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D collision)
 	{
 		Debug.Log("playControl::OnCollisionEnter2D GameOver()");
-		scoreKeeper.ResetScore ();
-		Application.LoadLevel("GamePlay");
+		Die ();
 	}
+
+	void Die()
+	{
+		Debug.Log("playControl::Die()");
+		scoreKeeper.ResetScore ();
+		Application.LoadLevel("StartMenu");
+	}
+
 }
