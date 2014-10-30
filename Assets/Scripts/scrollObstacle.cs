@@ -9,6 +9,7 @@ public class scrollObstacle : MonoBehaviour {
 	float distanceFromCamera;
 	float screenCrossPixelLeft;
 	float screenCrossPixelRight;
+	float modiPoint;
 
 	// Use this for initialization
 	void Start()
@@ -18,6 +19,8 @@ public class scrollObstacle : MonoBehaviour {
 		distanceFromCamera = (transform.position - Camera.main.transform.position).z;
 		screenCrossPixelLeft = 1.3f * Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, distanceFromCamera)).x;
 		screenCrossPixelRight = 1.3f * Camera.main.ViewportToWorldPoint (new Vector3 (1, 0, distanceFromCamera)).x;
+		modiPoint = Camera.main.ViewportToWorldPoint (new Vector3 (0.25f, 0, distanceFromCamera)).x;
+
 		transform.position = new Vector3(screenCrossPixelRight, 
 		                                 transform.position.y - range * Random.value, 
 		                                 transform.position.z);
@@ -30,7 +33,7 @@ public class scrollObstacle : MonoBehaviour {
 		
 	void CheckLocation()
 	{
-		if (transform.position.x < 0f) 
+		if (transform.position.x < modiPoint) 
 		{
 			if (!crossedModi) 
 			{

@@ -43,6 +43,10 @@ public class button_play : MonoBehaviour {
 				Debug.Log("Quit Button Pressed");
 				Application.Quit();
 			}
+			else if(sceneName.Equals("0"))
+			{
+				Debug.Log("Clicked on title image");
+			}
 			else if(sceneName.Equals("Rate"))
 			{
 				Debug.Log("Rate Button Pressed");
