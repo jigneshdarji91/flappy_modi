@@ -8,6 +8,11 @@ public class playControl : MonoBehaviour {
 	public AudioClip touchSound;
 	public AudioClip deathSound;
 
+	public int fontSize;
+	
+	static bool gameStarted = false;
+
+
 	void Start () {
 		float distanceFromCamera = (transform.position - Camera.main.transform.position).z;
 		float spawnPoint = Camera.main.ViewportToWorldPoint (new Vector3 (0.25f, 0, distanceFromCamera)).x;
@@ -16,6 +21,8 @@ public class playControl : MonoBehaviour {
 		                                 transform.position.z);
 
 		audio.clip = touchSound;
+
+		pauseGame (true);
 	}
 	
 	// Update is called once per frame
@@ -33,6 +40,8 @@ public class playControl : MonoBehaviour {
 		if(Input.GetMouseButtonDown(0) ||
 		   (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)) 
 		{
+			pauseGame(false);
+
 			//Debug.Log("playControl::Update Touch input");
 			audio.Play();
 			rigidbody2D.velocity = Vector2.zero;
@@ -60,5 +69,30 @@ public class playControl : MonoBehaviour {
 		audio.clip = deathSound;
 		audio.Play();
 		yield return new WaitForSeconds(audio.clip.length);
+	}
+
+	void pauseGame(bool gamePaused)
+	{
+		if (gamePaused)
+			Time.timeScale = 0;
+		else
+			Time.timeScale = 1;
+		gameStarted = !gamePaused;
+	}
+
+	void OnGUI()
+	{
+		if(!gameStarted)
+		{
+			//Set the GUIStyle style to be label
+			GUIStyle style = GUI.skin.GetStyle ("label");
+			
+			//Set the style alignment
+			style.alignment = TextAnchor.LowerCenter;
+			style.fontSize = fontSize;
+	
+			//Create a label and display with the current settings
+			GUI.Label (new Rect (0, 0, Screen.width, Screen.height), "Tap To Start!");
+		}
 	}
 }
