@@ -37,14 +37,12 @@ public class scrollObstacle : MonoBehaviour {
 		{
 			if (!crossedModi) 
 			{
-				Debug.Log ("scrollObstacle::CheckLocation() Increase score X: " + transform.position.x);
 				crossedModi = true;
 				scoreKeeper.incrementScore ();
 			}
 			if (transform.position.x < screenCrossPixelLeft) 
 			{
 				//Destroying this prefab obstacle
-				Debug.Log ("scrollObstacle::CheckLocation() Destroy X: " + transform.position.x);
 				Destroy (gameObject);
 			} 
 		}

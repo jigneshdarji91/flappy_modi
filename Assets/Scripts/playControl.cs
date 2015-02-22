@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Advertisements;
 
 public class playControl : MonoBehaviour {
 
@@ -9,11 +10,21 @@ public class playControl : MonoBehaviour {
 	public AudioClip deathSound;
 
 	public int fontSize;
-	
+
+	//Global variable for Ads
+	public bool showAds;
+	public bool enableTestMode;
+	public string zoneId;
+	public string gameId;
+	public int showAdsAfter;
+	static int gamesPlayed;
+
 	static bool gameStarted = false;
 
 
 	void Start () {
+		gamesPlayed = PlayerPrefs.GetInt ("GamesPlayed");
+		StartCoroutine (InitializeAds());
 		float distanceFromCamera = (transform.position - Camera.main.transform.position).z;
 		float spawnPoint = Camera.main.ViewportToWorldPoint (new Vector3 (0.25f, 0, distanceFromCamera)).x;
 		transform.position = new Vector3(spawnPoint, 
@@ -58,11 +69,19 @@ public class playControl : MonoBehaviour {
 	void Die()
 	{
 		Debug.Log("playControl::Die()");
+		gamesPlayed++;
+		PlayerPrefs.SetInt ("GamesPlayed", gamesPlayed);
+
 		//audio.clip = deathSound;
 		//audio.PlayScheduled (audio.clip.length);
+		Handheld.Vibrate();
 		PlayDeathSound ();
+		ShowAd ();
+
+
 		scoreKeeper.ResetScore ();
 		Application.LoadLevel("StartMenu");
+
 	}
 	IEnumerator PlayDeathSound() {
 		Debug.Log("playControl::PlayDeathSound()");
@@ -76,7 +95,7 @@ public class playControl : MonoBehaviour {
 		if (gamePaused)
 			Time.timeScale = 0;
 		else
-			Time.timeScale = 1;
+			Time.timeScale = 1.0f;
 		gameStarted = !gamePaused;
 	}
 
@@ -94,5 +113,37 @@ public class playControl : MonoBehaviour {
 			//Create a label and display with the current settings
 			GUI.Label (new Rect (0, 0, Screen.width, Screen.height), "Tap To Start!");
 		}
+	}
+
+	IEnumerator InitializeAds()
+	{
+		Debug.Log("InitializeAds BEGIN");
+		if(showAds)
+		{
+			if (Advertisement.isSupported) {
+				Advertisement.allowPrecache = true;
+				Advertisement.Initialize (gameId, enableTestMode);
+			} else {
+				Debug.Log("Platform not supported");
+			}
+		}
+		yield return new WaitForSeconds(0);
+	}
+
+	void ShowAd()
+	{
+		Debug.Log ("ShowAd AdInitialized: " + Advertisement.isInitialized
+						+ " AdReady: " + Advertisement.isReady(zoneId)
+						+ " gamesPlayed: " + gamesPlayed);
+		//Show an ad if its loaded already and 5 games have been played
+		if (Advertisement.isInitialized
+		    && Advertisement.isReady ()
+		    && gamesPlayed % showAdsAfter == 0) 
+		{
+			Advertisement.Show ();
+			Debug.Log ("playControl::Die() Advertisement Shown");
+		}
+		else
+			Debug.LogError("playControl::Die() Advertisement not ready");
 	}
 }

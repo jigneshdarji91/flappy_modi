@@ -9,7 +9,8 @@ public class button_play : MonoBehaviour {
 	public Vector2 relativeButtonSize;
 	public Vector2 relativeButtonLocation;
 	public GUIStyle guiStyle;
-	
+	public bool isVibrate;
+
 	void Start()
 	{
 		buttonWidth = (int) (Screen.width * relativeButtonSize.x);
@@ -37,7 +38,10 @@ public class button_play : MonoBehaviour {
 		// Draw a button to start the game
 		if(GUI.Button(buttonRect, buttonSprite, guiStyle))
 		{
-			Handheld.Vibrate();
+			if(isVibrate)
+			{
+				Handheld.Vibrate();
+			}
 			if(sceneName.Equals("Quit"))
 			{
 				Debug.Log("Quit Button Pressed");
@@ -50,7 +54,7 @@ public class button_play : MonoBehaviour {
 			else if(sceneName.Equals("Rate"))
 			{
 				Debug.Log("Rate Button Pressed");
-				Application.OpenURL("market://details?id=com.CasualGameAlliance.ModiFlappyBird");
+				Application.OpenURL("market://details?id=com.CasualGameAlliance.FlappyModi");
 			}
 			else if(sceneName.Equals("Share"))
 			{
