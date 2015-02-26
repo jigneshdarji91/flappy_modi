@@ -135,10 +135,11 @@ public class playControl : MonoBehaviour {
 		Debug.Log ("ShowAd AdInitialized: " + Advertisement.isInitialized
 						+ " AdReady: " + Advertisement.isReady(zoneId)
 						+ " gamesPlayed: " + gamesPlayed);
-		//Show an ad if its loaded already and 5 games have been played
+		//Show an ad if its loaded already and 5 games have been played after the first 100 games
 		if (Advertisement.isInitialized
 		    && Advertisement.isReady ()
-		    && gamesPlayed % showAdsAfter == 0) 
+		    && gamesPlayed / 100 != 0
+		    && gamesPlayed % showAdsAfter == 0)
 		{
 			Advertisement.Show ();
 			Debug.Log ("playControl::Die() Advertisement Shown");

@@ -7,14 +7,20 @@ public class scrollAndReset : MonoBehaviour {
 	float distanceFromCamera;
 	float screenCrossPixelLeft;
 	float screenCrossPixelRight;
+	float leftX, rightX;
 	// Use this for initialization
 	void Start () {
 		rigidbody2D.velocity = velocity;
 		distanceFromCamera = (transform.position - Camera.main.transform.position).z;
-		screenCrossPixelLeft = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, distanceFromCamera)).x
+
+		leftX = Camera.main.ViewportToWorldPoint (new Vector3 (0, 0, distanceFromCamera)).x;
+		rightX = Camera.main.ViewportToWorldPoint (new Vector3 (1, 0, distanceFromCamera)).x;
+		float extraSpace = gameObject.renderer.bounds.size.x - (rightX - leftX);
+		screenCrossPixelLeft = leftX
 			- gameObject.renderer.bounds.size.x / 2;
-		screenCrossPixelRight = 1.3f * Camera.main.ViewportToWorldPoint (new Vector3 (1, 0, distanceFromCamera)).x
-			+ gameObject.renderer.bounds.size.x / 2;
+		screenCrossPixelRight = rightX
+			+ gameObject.renderer.bounds.size.x / 2 
+				+ extraSpace;
 
 	}
 	
